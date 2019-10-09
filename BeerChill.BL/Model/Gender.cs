@@ -5,6 +5,7 @@ namespace BeerChill.BL.Model
     /// <summary>
     /// Пол.
     /// </summary>
+    [Serializable]
     public class Gender
     {
         /// <summary>
