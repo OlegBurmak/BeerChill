@@ -1,9 +1,5 @@
 ﻿using BeerChill.BL.Controller;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BeerChill.CMD
 {
@@ -15,31 +11,43 @@ namespace BeerChill.CMD
             Console.WriteLine("Введите имя пользователя: ");
             var userName = Console.ReadLine();
 
-            Console.WriteLine("Введите дату рождения(дд.мм.гг): ");
-            DateTime userBirthday;
-            if (DateTime.TryParse(Console.ReadLine(), out userBirthday))
+            var userController = new UserController(userName);
+            if (userController.IsNewUser)
             {
 
+                Console.Write("Введите пол: ");
+                var gender = Console.ReadLine();
+
+                var birthDate = ParseValue<DateTime>("Введите дату рождения (дд.мм.гг): ","Неверный формат даты!");
+
+                var weight = ParseValue<int>("Введите вес: ", "Неверный формат веса!");
+
+                var height = ParseValue<int>("Введите рост: ", "Неверный формат роста!");
+
+
+                userController.SetNewUserData(gender, birthDate, weight, height);
             }
-            else
+
+            Console.WriteLine(userController.CurrentUser);
+            Console.ReadKey();
+        }
+
+        private static T ParseValue<T>(string writeStr, string errorStr)
+        {
+
+            while (true)
             {
-                Console.WriteLine("Неверный формат даты");
+                Console.Write(writeStr);
+                try
+                {
+                    var parsedValue = (T)Convert.ChangeType(Console.ReadLine(), typeof(T));
+                    return parsedValue;
+                }
+                catch
+                {
+                    Console.WriteLine(errorStr);
+                }
             }
-
-            Console.WriteLine("Укажите ваш пол: ");
-            var genderName = Console.ReadLine();
-
-            Console.WriteLine("Укажите ваш рост: ");
-            int userHeight;
-            int.TryParse(Console.ReadLine(), out userHeight);
-
-            Console.WriteLine("Укажите ваш вес: ");
-            int userWeight;
-            int.TryParse(Console.ReadLine(), out userWeight);
-
-            var userController = new UserController(userName, userBirthday, genderName, userWeight, userHeight);
-            userController.Save();
-
         }
     }
 }

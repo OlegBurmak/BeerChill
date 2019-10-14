@@ -16,12 +16,12 @@ namespace BeerChill.BL.Model
         /// <summary>
         /// Дата рождения.
         /// </summary>
-        public DateTime Birthday { get; }
+        public DateTime Birthday { get; set; }
 
         /// <summary>
         /// Пол.
         /// </summary>
-        public Gender Gender { get; }
+        public Gender Gender { get; set; }
 
         /// <summary>
         /// Вес.
@@ -33,10 +33,12 @@ namespace BeerChill.BL.Model
         /// </summary>
         public int Height { get; set; }
 
+        /// <summary>
+        /// Возраст.
+        /// </summary>
+        public int Age { get { return DateTime.Now.Year - Birthday.Year; } }
 
-        public User(string name, DateTime birthDate, Gender gender): this(name,birthDate,gender,0,0)
-        {
-        }
+
         /// <summary>
         /// Создать нового пользователя 
         /// </summary>
@@ -77,9 +79,18 @@ namespace BeerChill.BL.Model
             this.Height = height;
         }
 
+        public User(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("Поле имя пользователя не должно быть пустым!", nameof(name));
+            }
+
+            this.Name = name;
+        }
         public override string ToString()
         {
-            return Name;
+            return $"{Name}, {Age.ToString()} age";
         }
     }
 }

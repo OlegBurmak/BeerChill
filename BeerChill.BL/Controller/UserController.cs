@@ -1,6 +1,8 @@
 ﻿using BeerChill.BL.Model;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace BeerChill.BL.Controller
@@ -11,35 +13,67 @@ namespace BeerChill.BL.Controller
     public class UserController
     {
         /// <summary>
-        /// Пользователь приложения.
+        /// Пользователи приложения.
         /// </summary>
-        public User User { get; }
+        public List<User> Users { get; }
 
+        public User CurrentUser { get; }
+
+        public bool IsNewUser { get; } = false;
         /// <summary>
         /// Создание нового контроллера пользователя.
         /// </summary>
         /// <param name="user"></param>
-        public UserController(string userName, DateTime userBirth, string genderName, int weight, int height)
+        public UserController(string userName)
         {
-            var gender = new Gender(genderName);
-            this.User = new User(userName, userBirth, gender, weight, height);
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentNullException("Имя пользователя не может быть пустым!", nameof(userName));
+            }
+
+            Users = GetUsersData();
+
+            CurrentUser = Users.SingleOrDefault(u => u.Name == userName);
+            
+            if(CurrentUser == null)
+            {
+                CurrentUser = new User(userName);
+                Users.Add(CurrentUser);
+                this.IsNewUser = true;
+                Save();
+            }
+          
         }
+
+        public void SetNewUserData(string genderName, DateTime birthDate, int weight = 1, int height = 1)
+        {
+
+            CurrentUser.Gender = new Gender(genderName);
+            CurrentUser.Birthday = birthDate;
+            CurrentUser.Weight = weight;
+            CurrentUser.Height = height;
+
+            Save();
+        }
+
         /// <summary>
-        /// Загрузить данные пользователя.
+        /// Получить сохраненный список пользователей.
         /// </summary>
-        /// <returns>Пользователь приложения.</returns>
-        public UserController()
+        /// <returns></returns>
+        private List<User> GetUsersData()
         {
             var formatter = new BinaryFormatter();
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                var user = formatter.Deserialize(fs) as User;
-                if (user != null)
+                var users = formatter.Deserialize(fs) as List<User>;
+                if (users != null)
                 {
-                    this.User = user;
+                    return users;
                 }
-
-                // TODO: Что-то сделать если пользователь не найден.
+                else
+                {
+                    return new List<User>();
+                }
             }
         }
 
@@ -51,7 +85,7 @@ namespace BeerChill.BL.Controller
             var formatter = new BinaryFormatter();
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                formatter.Serialize(fs, User);
+                formatter.Serialize(fs, Users);
             }
         }
 
