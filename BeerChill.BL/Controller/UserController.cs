@@ -65,7 +65,11 @@ namespace BeerChill.BL.Controller
             var formatter = new BinaryFormatter();
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                var users = formatter.Deserialize(fs) as List<User>;
+                List<User> users = null;
+                if (fs.Length > 0)
+                {
+                    users = formatter.Deserialize(fs) as List<User>;
+                }
                 if (users != null)
                 {
                     return users;

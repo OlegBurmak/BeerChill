@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerChill.BL", "BeerChill.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerChill.CMD", "BeerChill.CMD\BeerChill.CMD.csproj", "{89E095FC-5FDB-4164-8970-C31004AF7AF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerChill.BLTests", "BeerChill.BLTests\BeerChill.BLTests.csproj", "{B07E976F-BFE3-4D3B-92F1-3C58A0E5259C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{89E095FC-5FDB-4164-8970-C31004AF7AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89E095FC-5FDB-4164-8970-C31004AF7AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89E095FC-5FDB-4164-8970-C31004AF7AF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B07E976F-BFE3-4D3B-92F1-3C58A0E5259C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B07E976F-BFE3-4D3B-92F1-3C58A0E5259C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B07E976F-BFE3-4D3B-92F1-3C58A0E5259C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B07E976F-BFE3-4D3B-92F1-3C58A0E5259C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
