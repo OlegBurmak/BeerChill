@@ -10,8 +10,9 @@ namespace BeerChill.BL.Controller
     /// <summary>
     /// Конструктор пользователя.
     /// </summary>
-    public class UserController
+    public class UserController : ControllerBase
     {
+        private const string USERS_FILE_NAME = "users.dat";
         /// <summary>
         /// Пользователи приложения.
         /// </summary>
@@ -40,7 +41,7 @@ namespace BeerChill.BL.Controller
                 CurrentUser = new User(userName);
                 Users.Add(CurrentUser);
                 this.IsNewUser = true;
-                Save();
+                SaveUserData();
             }
           
         }
@@ -53,7 +54,7 @@ namespace BeerChill.BL.Controller
             CurrentUser.Weight = weight;
             CurrentUser.Height = height;
 
-            Save();
+            SaveUserData();
         }
 
         /// <summary>
@@ -62,35 +63,15 @@ namespace BeerChill.BL.Controller
         /// <returns></returns>
         private List<User> GetUsersData()
         {
-            var formatter = new BinaryFormatter();
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                List<User> users = null;
-                if (fs.Length > 0)
-                {
-                    users = formatter.Deserialize(fs) as List<User>;
-                }
-                if (users != null)
-                {
-                    return users;
-                }
-                else
-                {
-                    return new List<User>();
-                }
-            }
+            return Load<List<User>>(USERS_FILE_NAME) ?? new List<User>();
         }
 
         /// <summary>
         /// Сохранить данные пользователя.
         /// </summary>
-        public void Save()
+        public void SaveUserData()
         {
-            var formatter = new BinaryFormatter();
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, Users);
-            }
+            Save(USERS_FILE_NAME, Users);
         }
 
     }
