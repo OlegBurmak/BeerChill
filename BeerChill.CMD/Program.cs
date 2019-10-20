@@ -1,6 +1,8 @@
 ﻿using BeerChill.BL.Controller;
 using BeerChill.BL.Model;
 using System;
+using System.Globalization;
+using System.Resources;
 
 namespace BeerChill.CMD
 {
@@ -8,8 +10,11 @@ namespace BeerChill.CMD
     {
         static void Main(string[] args)
         {
+            var culture = CultureInfo.CreateSpecificCulture("ru-ru");
+            var resourceManager = new ResourceManager("BeerChill.CMD.Languages.Messages", typeof(Program).Assembly);
 
-            Console.WriteLine("Введите имя пользователя: ");
+
+            Console.WriteLine(resourceManager.GetString("Hello", culture));
             var userName = Console.ReadLine();
 
             var userController = new UserController(userName);
